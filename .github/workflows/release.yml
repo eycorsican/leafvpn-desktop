@@ -47,6 +47,7 @@ jobs:
           path: src-tauri/target/release/bundle/dmg/*.dmg
 
   create-release:
+    permissions: write-all
     needs: [build]
     runs-on: macos-latest
     steps:
@@ -77,6 +78,7 @@ jobs:
           path: ./upload_url.txt
 
   release-bin:
+    permissions: write-all
     needs: [create-release]
     runs-on: macos-latest
     strategy:
