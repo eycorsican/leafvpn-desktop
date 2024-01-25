@@ -88,7 +88,7 @@ jobs:
           - LeafVPN.dmg
     steps:
       - name: download upload url
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: upload_url.txt
 
@@ -98,7 +98,7 @@ jobs:
           echo "uploadurl=$upload_url" >> $GITHUB_ENV
 
       - name: download asset
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ${{ matrix.artifact }}
 
