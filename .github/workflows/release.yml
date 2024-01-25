@@ -102,12 +102,16 @@ jobs:
         with:
           name: ${{ matrix.artifact }}
 
+      - name: list files
+        run: |
+          ls -aR
+
       - name: upload asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ env.uploadurl }}
-          asset_path: ./${{ matrix.artifact }}
+          asset_path: ${{ matrix.artifact }}
           asset_name: ${{ matrix.artifact }}
           asset_content_type: application/octet-stream
