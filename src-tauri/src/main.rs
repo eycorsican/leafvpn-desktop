@@ -136,6 +136,8 @@ fn configure_proxy_file(app_handle: tauri::AppHandle) -> Option<String> {
         String::from("scripts/configure_proxy")
     } else if cfg!(target_os = "windows") {
         String::from("scripts/configure_proxy.bat")
+    } else if cfg!(target_os = "linux") {
+        String::from("scripts/configure_proxy.sh")
     } else {
         panic!("unsupported os");
     };
@@ -158,6 +160,11 @@ fn enable_system_proxy(app_handle: tauri::AppHandle) {
             .args(["/C", &config_proxy, "on", &ip, "1180"])
             .status()
             .expect("unable to configure proxy");
+    } else if cfg!(target_os = "linux") {
+        Command::new("bash")
+        .args([&config_proxy, "on", "0", "1080"])
+        .status()
+        .expect("nable to configure proxy");
     } else {
         panic!("unsupported os");
     }
@@ -175,6 +182,11 @@ fn disable_system_proxy(app_handle: tauri::AppHandle) {
             .args(["/C", &config_proxy, "off"])
             .status()
             .expect("unable to configure proxy");
+    } else if cfg!(target_os = "linux") {
+        Command::new("bash")
+        .args([&config_proxy, "off"])
+        .status()
+        .expect("unable to configure proxy");
     } else {
         panic!("unsupported os");
     }
