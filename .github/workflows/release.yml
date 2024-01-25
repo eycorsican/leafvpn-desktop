@@ -83,7 +83,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        artifact:
+        asset:
           - LeafVPN-setup.exe
           - LeafVPN.dmg
     steps:
@@ -100,7 +100,17 @@ jobs:
       - name: download asset
         uses: actions/download-artifact@v4
         with:
-          name: ${{ matrix.artifact }}
+          name: ${{ matrix.asset }}
+
+      - name: rename asset
+        if: ${{ matrix.asset == 'LeafVPN-setup.exe' }}
+        run: |
+          mv LeafVPN*.exe ${{ matrix.asset }}
+
+      - name: rename asset
+        if: ${{ matrix.asset == 'LeafVPN.dmg' }}
+        run: |
+          mv LeafVPN*.dmg ${{ matrix.asset }}
 
       - name: list files
         run: |
@@ -112,6 +122,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ env.uploadurl }}
-          asset_path: ${{ matrix.artifact }}
-          asset_name: ${{ matrix.artifact }}
+          asset_path: ./${{ matrix.asset }}
+          asset_name: ${{ matrix.asset }}
           asset_content_type: application/octet-stream
