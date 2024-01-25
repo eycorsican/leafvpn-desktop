@@ -1,0 +1,111 @@
+name: releases
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os:
+          - macos-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: install Rust
+        uses: hecrj/setup-rust-action@v2
+        with:
+          rust-version: stable
+
+      - name: install tauri-cli
+        run: |
+          cargo install tauri-cli
+
+      - name: build
+        run: |
+          cargo tauri build
+
+      - name: upload assets
+        if: ${{ matrix.os == 'windows-latest' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: LeafVPN-setup.exe
+          path: src-tauri\target\release\bundle\nsis\*.exe
+
+      - name: upload assets
+        if: ${{ matrix.os == 'macos-latest' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: LeafVPN.dmg
+          path: src-tauri/target/release/bundle/dmg/*.dmg
+
+  create-release:
+    needs: [build]
+    runs-on: macos-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: create upload url file
+        run: |
+          echo -n "${{ steps.create_release.outputs.upload_url }}" > upload_url.txt
+
+      - name: persist upload url
+        uses: actions/upload-artifact@v4
+        with:
+          name: upload_url.txt
+          path: ./upload_url.txt
+
+  release-bin:
+    needs: [create-release]
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        artifact:
+          - LeafVPN-setup.exe
+          - LeafVPN.dmg
+    steps:
+      - name: download upload url
+        uses: actions/download-artifact@v2
+        with:
+          name: upload_url.txt
+
+      - name: get upload url
+        run: |
+          upload_url=`cat upload_url.txt`
+          echo "uploadurl=$upload_url" >> $GITHUB_ENV
+
+      - name: download asset
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ matrix.artifact }}
+
+      - name: upload asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ env.uploadurl }}
+          asset_path: ./${{ matrix.artifact }}
+          asset_name: ${{ matrix.artifact }}
+          asset_content_type: application/octet-stream
