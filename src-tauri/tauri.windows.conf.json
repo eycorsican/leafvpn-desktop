@@ -1,0 +1,9 @@
+{
+  "tauri": {
+    "bundle": {
+      "resources": [
+        "scripts/configure_proxy.bat"
+      ]
+	}
+  }
+}
