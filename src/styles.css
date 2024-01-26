@@ -23,6 +23,12 @@
   text-align: center;
 }
 
+.container-body {
+  height: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -32,11 +38,6 @@
 
 .logo.tauri:hover {
   filter: drop-shadow(0 0 2em #24c8db);
-}
-
-#leafvpn-status {
-  margin: 0 auto;
-  text-align: center;
 }
 
 img {
@@ -84,7 +85,7 @@ span.note2 {
   margin-right: auto;
 }
 
-#dl-for-android {
+.link {
   font-weight: 500;
   color: #646cff;
   text-decoration: inherit;

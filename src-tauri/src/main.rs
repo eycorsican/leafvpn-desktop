@@ -84,7 +84,7 @@ fn listen_commands(app_handle: tauri::AppHandle) {
 }
 
 #[tauri::command]
-fn run_leaf(app_handle: tauri::AppHandle, socks_ip: String, socks_port: u16) {
+fn start_vpn(app_handle: tauri::AppHandle, socks_ip: String, socks_port: u16) {
     let config = format!("[General]\nloglevel=debug\ndns-server=1.1.1.1\nsocks-interface=127.0.0.1\nsocks-port=1080\n[Proxy]\nproxy=socks,{},{}", socks_ip, socks_port);
     thread::spawn(move || {
         if !leaf::is_running(RTID) {
@@ -102,7 +102,7 @@ fn run_leaf(app_handle: tauri::AppHandle, socks_ip: String, socks_port: u16) {
 }
 
 #[tauri::command]
-fn is_leaf_running() -> bool {
+fn is_vpn_running() -> bool {
     leaf::is_running(RTID)
 }
 
@@ -126,7 +126,7 @@ fn get_listen_ip() -> String {
 }
 
 #[tauri::command]
-fn stop_leaf(app_handle: tauri::AppHandle) {
+fn stop_vpn(app_handle: tauri::AppHandle) {
     leaf::shutdown(RTID);
     disable_system_proxy(app_handle);
 }
@@ -194,12 +194,12 @@ fn main() {
         })
         .invoke_handler(tauri::generate_handler![
             listen_commands,
-            run_leaf,
-            is_leaf_running,
+            start_vpn,
+            is_vpn_running,
             get_remote_socks_ip,
             get_remote_socks_port,
             get_listen_address,
-            stop_leaf,
+            stop_vpn,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

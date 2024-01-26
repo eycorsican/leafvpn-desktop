@@ -1,42 +1,44 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="styles.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tauri App</title>
-    <script type="module" src="/main.js" defer></script>
-    <script type="text/javascript" src="/qrcode.min.js" defer></script>
-    <style>
-      .logo.vanilla:hover {
-        filter: drop-shadow(0 0 2em #ffe21c);
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="container">
-      <div id="leafvpn-status">
-		  <div id="leafvpn-status-connected">
-			  <span id="connected-msg"></span>
-			  <br/>
-			  <button id="stop-btn">Stop</button>
-		  </div>
-		  <div id="leafvpn-status-disconnected">
-			  <div id="connect-qrcode"></div>
-			  <div id="qrcode-msg">
-				  <span class="note1">Scan the QR Code with Leaf VPN on your phone.</span>
-				  <br/>
-				  <span class="note2">Your phone must connect to the same local/WiFi network.</span>
-				  <br/>
-				  <span class="note2">Your firewall should be properly configured or be disabled.</span>
-				  <br/>
-				  <br/>
-				  <span>Download Leaf VPN for <span id="dl-for-android">Android</span></span>
-			  </div>
-		  </div>
-	  </div>
-	  <div id="foot-note"></div>
-    </div>
-  </body>
+   <head>
+      <meta charset="UTF-8" />
+      <link rel="stylesheet" href="styles.css" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Leaf VPN</title>
+      <script type="module" src="/main.js" defer></script>
+      <script type="text/javascript" src="/qrcode.min.js" defer></script>
+      <style>
+         .logo.vanilla:hover {
+         filter: drop-shadow(0 0 2em #ffe21c);
+         }
+      </style>
+   </head>
+   <body>
+      <div class="container">
+         <div class="container-body">
+            <div id="leafvpn-status-connected">
+               <span id="connected-msg"></span>
+               <br/>
+               <button id="stop-btn">Stop</button>
+            </div>
+            <div id="leafvpn-status-disconnected">
+               <div id="connect-qrcode"></div>
+               <div id="qrcode-msg">
+                  <span class="note1">Scan the QR Code with Leaf VPN on your phone.</span>
+                  <br/>
+                  <span class="note2">Your phone must connect to the same local/WiFi network.</span>
+                  <br/>
+                  <span class="note2">Your firewall should be properly configured or be disabled.</span>
+               </div>
+            </div>
+         </div>
+         <div class="container-foot">
+            <span>Download Leaf VPN for <span id="android-link" class="link">Android</span> or <span id="ios-link" class="link">iOS</span>.</span>
+            <br/>
+            <br/>
+            <span id="github-link" class="link">GitHub</span>
+         </div>
+         <div id="foot-note"></div>
+      </div>
+   </body>
 </html>
