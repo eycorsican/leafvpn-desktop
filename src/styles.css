@@ -29,6 +29,11 @@
   text-align: center;
 }
 
+#leafvpn-status-connected {
+  width: 400px;
+  word-wrap: normal;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -55,7 +60,16 @@ img {
 
 #connected-msg {
   font-weight: 500;
-  font-size: 20px;
+  font-size: 30px;
+}
+
+.hl {
+  color: pink;
+}
+
+#connected-note {
+  font-weight: 500;
+  font-size: 12px;
 }
 
 #foot-msg {

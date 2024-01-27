@@ -86,8 +86,6 @@ async function reloadUI() {
     document.getElementById("leafvpn-status-connected").style.display = "block";
     document.getElementById("leafvpn-status-disconnected").style.display = "none";
     let msg = document.getElementById("connected-msg");
-    let ip = await getRemoteSocksIP();
-    let port = await getRemoteSocksPort();
     msg.innerHTML = "Connected!";
     let btn = document.getElementById("stop-btn");
     btn.onclick = async() => { await stopVPN() };
