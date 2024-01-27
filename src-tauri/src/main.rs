@@ -131,6 +131,18 @@ fn stop_vpn(app_handle: tauri::AppHandle) {
     disable_system_proxy(app_handle);
 }
 
+#[tauri::command]
+fn is_debug() -> bool {
+    #[cfg(debug_assertions)]
+    {
+        true
+    }
+    #[cfg(not(debug_assertions))]
+    {
+        false
+    }
+}
+
 fn configure_proxy_file(app_handle: tauri::AppHandle) -> Option<String> {
     let f = if cfg!(target_os = "macos") {
         String::from("scripts/configure_proxy")
@@ -200,6 +212,7 @@ fn main() {
             get_remote_socks_port,
             get_listen_address,
             stop_vpn,
+            is_debug,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

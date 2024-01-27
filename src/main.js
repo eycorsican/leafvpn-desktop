@@ -12,6 +12,8 @@ const {
   getVersion
 } = window.__TAURI__.app;
 
+let dev;
+
 function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
@@ -51,6 +53,10 @@ async function getRemoteSocksPort() {
 
 async function getListenAddress() {
   return await invoke("get_listen_address", {});
+}
+
+async function isDebug() {
+  return await invoke("is_debug", {});
 }
 
 async function listenStartVPNEvent() {
@@ -102,8 +108,17 @@ async function reloadUI() {
   });
 }
 
+window.addEventListener("contextmenu", (e) => {
+  if (!dev) {
+    e.preventDefault();
+  }
+});
+
 window.addEventListener("DOMContentLoaded", () => {
   listenEvents();
   listenCommands();
   reloadUI();
+  isDebug().then((v) => {
+    dev = v;
+  });
 });
