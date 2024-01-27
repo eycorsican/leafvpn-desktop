@@ -97,15 +97,13 @@ async function reloadUI() {
     document.getElementById("android-link").onclick = openAndroidAppLink;
     document.getElementById("ios-link").onclick = openIosAppLink;
     document.getElementById("github-link").onclick = openGithubLink;
-    getListenAddress().then((addr) => {
-      let qrcode = document.getElementById("connect-qrcode");
-      qrcode.innerHTML = "";
-      new QRCode(qrcode, addr);
-    });
+    let addr = await getListenAddress();
+    let qrcode = document.getElementById("connect-qrcode");
+    qrcode.innerHTML = "";
+    new QRCode(qrcode, addr);
   }
-  getVersion().then((v) => {
-    document.getElementById("foot-note").innerHTML = "v" + v;
-  });
+  let v = await getVersion();
+  document.getElementById("foot-note").innerHTML = "v" + v;
 }
 
 window.addEventListener("contextmenu", (e) => {
@@ -118,7 +116,5 @@ window.addEventListener("DOMContentLoaded", () => {
   listenEvents();
   listenCommands();
   reloadUI();
-  isDebug().then((v) => {
-    dev = v;
-  });
+  isDebug().then((v) => { dev = v });
 });
